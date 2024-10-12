@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">EduManage</string>
+    <string name="app_name">Edu Manage</string>
+    <string name="welcome_msg">Welcome to EduManage</string>
+    <string name="name_hint">name</string>
+    <string name="username_hint">username</string>
+    <string name="password_hint">password</string>
+    <string name="confirm_pass_hint">confirm password</string>
+    <string name="code_hint">school code</string>
+    <string name="admin">Welcome Admin</string>
+    <string name="category">Teacher/Student</string>
+    <string name="admin_note">*If you register as admin, you can create a school and add teachers, students in your school. Also can delete them.</string>
+    <string name="teacher_note">*If you register as teacher, you can create classes and add students in your classes and maintain classes [if you are recruited in any school].</string>
+    <string name="student_note">*If you register as student, you can see your classes, grade and attendance [if you are admitted in any school].</string>
 </resources>
