@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/background_color">
+    <TextView
+        android:id="@+id/tv_register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register as: "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/black" />
+    <Button
+        android:id="@+id/btn_register_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:padding="10dp"
+        android:backgroundTint="#673AB7"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp" />
+    <Button
+        android:id="@+id/btn_register_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Teacher"
+        android:padding="10dp"
+        android:backgroundTint="#673AB7"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp" />
+    <Button
+        android:id="@+id/btn_register_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student"
+        android:padding="10dp"
+        android:backgroundTint="#673AB7"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/custom_color1">
+        <TextView
+            android:id="@+id/tv_register_note_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note: "
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/tv_register_note_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/admin_note"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/tv_register_note_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/teacher_note"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/tv_register_note_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/student_note"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+</LinearLayout>
