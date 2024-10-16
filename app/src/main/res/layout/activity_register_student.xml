@@ -1,11 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterStudentActivity">
+    android:background="@color/background_color">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="20dp"
+      android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_r_student_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register as student"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/et_r_student_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="@string/name_hint"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="name" />
+
+    <EditText
+        android:id="@+id/et_r_student_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="@string/username_hint"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="school code"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_father_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="father name"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_dob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="date of birth"
+        android:inputType="date"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="gender"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="emailAddress" />
+
+    <EditText
+        android:id="@+id/et_r_student_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="address"
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="text" />
+
+    <EditText
+        android:id="@+id/et_r_student_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="mobile"
+        android:inputType="phone"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="phone" />
+
+    <EditText
+        android:id="@+id/et_r_student_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="password" />
+
+    <EditText
+        android:id="@+id/et_r_student_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:hint="confirm password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        android:autofillHints="password" />
+
+    <Button
+        android:id="@+id/btn_r_student_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:backgroundTint="#673AB7"
+        android:textColor="@android:color/white"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp" />
+
+    <TextView
+        android:id="@+id/tv_r_student_login_msg"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:text="Already have an account? Login here."
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_r_student_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="14sp"
+        android:padding="12dp"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp" />
+
+  </LinearLayout>
+</ScrollView>
