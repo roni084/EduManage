@@ -13,6 +13,9 @@
         android:theme="@style/Theme.EduManage"
         tools:targetApi="31">
         <activity
+            android:name=".ViewSchoolActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateSchoolActivity"
             android:exported="false" />
         <activity
