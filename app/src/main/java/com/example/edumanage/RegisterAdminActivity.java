@@ -8,19 +8,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.activity.EdgeToEdge;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import java.util.regex.Pattern;
 
 public class RegisterAdminActivity extends AppCompatActivity {
+
+    // Regex patterns for validation
+    private static final Pattern NAME_PATTERN = Pattern.compile("[A-Z][a-z]+(?:\\s[A-Z][a-z]+)?");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("[a-z0-9][\\w.-]+@[\\w.-]+\\.[a-z]{2,}");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("01[356789]\\d{8}");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Z])(?=.*\\W)[\\S]{6,}");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_admin);
 
-        //use to get all View from xml layout
+        // Views from XML layout
         EditText etAdminName = findViewById(R.id.et_r_admin_name);
         EditText etAdminUsername = findViewById(R.id.et_r_admin_username);
         EditText etAdminEmail = findViewById(R.id.et_r_admin_email);
@@ -30,9 +34,8 @@ public class RegisterAdminActivity extends AppCompatActivity {
         Button btnAdminRegister = findViewById(R.id.btn_r_admin_register);
         Button btnAdminLogin = findViewById(R.id.btn_r_admin_login);
 
-        //If Register button clicked
+        // Register button clicked
         btnAdminRegister.setOnClickListener(v -> {
-            //takes required data from admin
             String name = etAdminName.getText().toString();
             String username = etAdminUsername.getText().toString();
             String email = etAdminEmail.getText().toString();
@@ -40,25 +43,38 @@ public class RegisterAdminActivity extends AppCompatActivity {
             String password = etAdminPassword.getText().toString();
             String confirmPassword = etAdminConfirmPassword.getText().toString();
 
-            //Checking non-empty fields
-            if (password.equals(confirmPassword) && !username.isEmpty() && !password.isEmpty()) {
-                Toast.makeText(RegisterAdminActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-            } else {
-                if (username.isEmpty()) {
-                    Toast.makeText(RegisterAdminActivity.this, "Empty username! Try again.", Toast.LENGTH_SHORT).show();
-                }
-                if (password.isEmpty()) {
-                    Toast.makeText(RegisterAdminActivity.this, "Empty password! Try again.", Toast.LENGTH_SHORT).show();
-                }
-                if (!password.equals(confirmPassword)) {
-                    Toast.makeText(RegisterAdminActivity.this, "Passwords do not match! Try again.", Toast.LENGTH_SHORT).show();
-                }
+            if(name.isEmpty() || username.isEmpty() || email.isEmpty() || mobile.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                return;
             }
+            // Validate fields
+            if (!NAME_PATTERN.matcher(name).matches()) {
+                etAdminName.setError("Invalid name! Only letters allowed.");
+                return;
+            }
+            if (!EMAIL_PATTERN.matcher(email).matches()) {
+                etAdminEmail.setError("Invalid email address!");
+                return;
+            }
+            if (!PHONE_PATTERN.matcher(mobile).matches()) {
+                etAdminMobile.setError("Invalid phone format. Try again.");
+                return;
+            }
+            if (!PASSWORD_PATTERN.matcher(password).matches()) {
+                etAdminPassword.setError("Password must be at least 6 characters, include an uppercase letter and a special character.");
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                etAdminConfirmPassword.setError("Passwords do not match! Try again.");
+                return;
+            }
+
+            Toast.makeText(RegisterAdminActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
         });
 
-        //If Login button clicked
+        // Login button clicked
         btnAdminLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterAdminActivity.this, LoginActivity.class);  //Assuming LoginActivity is the activity for login as admin after Login button clicked
+            Intent intent = new Intent(RegisterAdminActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }

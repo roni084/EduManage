@@ -42,17 +42,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 //checking if user is admin
                 if (username.equals("A")) {
-                    Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                    startActivity(intent);
 
                 }
                 //checking if user is teacher
                 else if (username.equals("T")) {
-                    Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, TeacherActivity.class);
+                    startActivity(intent);
 
                 }
                 //checking if user is student
                 else if (username.equals("S")) {
-                    Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, StudentActivity.class);
+                    startActivity(intent);
 
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed! Check your credentials.", Toast.LENGTH_SHORT).show();
@@ -61,8 +64,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         //If Register button clicked
         btnRegister.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Register button clicked!", Toast.LENGTH_SHORT).show();
-
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }
