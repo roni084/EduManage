@@ -70,6 +70,8 @@ public class RegisterTeacherActivity extends AppCompatActivity {
             String t_pass = etTeacherPassword.getText().toString().trim();
             String t_confirmPass = etTeacherConfirmPassword.getText().toString().trim();
 
+            DatabaseHelper dbc = new DatabaseHelper(RegisterTeacherActivity.this);  // Database connection
+
             // Get selected gender
             int selectedGenderId = rgTeacherGender.getCheckedRadioButtonId();
             if (selectedGenderId != -1) {
@@ -102,8 +104,19 @@ public class RegisterTeacherActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Registration successful message
-                Toast.makeText(RegisterTeacherActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                if (checkTeacher(dbc, t_name, t_username, t_code)) {
+                    boolean teacherRegistered = dbc.registerTeacher(t_name, t_username, t_email, t_address, t_dob, t_gender, t_mobile, t_pass);  // Data passed to insertTeacher method
+                    Log.d("RegisterTeacherActivity", "teacherRegistered: " + teacherRegistered);  // Log the result
+                    if (teacherRegistered) {
+                        Toast.makeText(RegisterTeacherActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterTeacherActivity.this, LoginActivity.class);  // Assuming LoginActivity is the activity after registered as teacher
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(RegisterTeacherActivity.this, "Registration failed! Try again.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(RegisterTeacherActivity.this, "User not found in database", Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 Toast.makeText(this, "Please select a gender", Toast.LENGTH_SHORT).show();
@@ -116,6 +129,22 @@ public class RegisterTeacherActivity extends AppCompatActivity {
             Intent intent = new Intent(RegisterTeacherActivity.this, LoginActivity.class);  // LoginActivity is the activity for login as teacher after Login button clicked
             startActivity(intent);
         });
+    }
+
+    private boolean checkTeacher(DatabaseHelper dbc, String tName, String tUsername, String tCode) {
+        SQLiteDatabase db = dbc.getReadableDatabase();  // Readable database
+        Cursor teacherCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_TEACHER + " WHERE " + DatabaseHelper.COL_TNAME + "=? AND " + DatabaseHelper.COL_TUSERNAME + "=?", new String[]{tName, tUsername});
+        Cursor schoolCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_SCHOOL + " WHERE " + DatabaseHelper.COL_SCHOOLCODE + "=?", new String[]{tCode});
+
+        // Move the cursor to the first row
+        boolean teacherExists = teacherCursor.moveToFirst();
+        boolean schoolExists = schoolCursor.moveToFirst();
+
+        // Close the Cursor
+        teacherCursor.close();
+        schoolCursor.close();
+
+        return teacherExists && schoolExists;
     }
 
     private void showDatePickerDialog() {

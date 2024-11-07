@@ -2,7 +2,10 @@ package com.example.edumanage;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -62,6 +65,8 @@ public class RegisterStudentActivity extends AppCompatActivity {
             String st_pass = etStudentPassword.getText().toString();
             String st_confirmPass = etStudentConfirmPassword.getText().toString();
 
+            DatabaseHelper dbc = new DatabaseHelper(RegisterStudentActivity.this);  // Database connection
+
             // Get selected gender
             int selectedGenderId = rgStudentGender.getCheckedRadioButtonId();
             if (selectedGenderId != -1) {
@@ -98,8 +103,20 @@ public class RegisterStudentActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Registration successful message
-                Toast.makeText(RegisterStudentActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                if (checkStudent(dbc, st_name, st_username, st_code)) {
+                    boolean studentRegistered = dbc.registerStudent(st_name, st_username, st_father, st_dob, st_gender, st_email, st_address, st_mobile, st_pass);  // Data passed to insertTeacher method
+                    Log.d("RegisterStudentActivity", "studentRegistered: " + studentRegistered);  // Log the result
+
+                    if (studentRegistered) {
+                        Toast.makeText(RegisterStudentActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterStudentActivity.this, LoginActivity.class);  // Assuming LoginActivity is the activity after registered as teacher
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(RegisterStudentActivity.this, "Registration failed! Try again.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(RegisterStudentActivity.this, "User not found in database", Toast.LENGTH_SHORT).show();
+                }
 
             } else {
                 Toast.makeText(this, "Please select a gender", Toast.LENGTH_SHORT).show();
@@ -111,6 +128,22 @@ public class RegisterStudentActivity extends AppCompatActivity {
             Intent intent = new Intent(RegisterStudentActivity.this, LoginActivity.class);
             startActivity(intent);
         });
+    }
+
+    private boolean checkStudent(DatabaseHelper dbc, String stName, String stUsername, String stCode) {
+        SQLiteDatabase db = dbc.getReadableDatabase();  // Readable database
+        Cursor studentCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_STUDENT + " WHERE " + DatabaseHelper.COL_SNAME + "=? AND " + DatabaseHelper.COL_SUSERNAME + "=?", new String[]{stName, stUsername});
+        Cursor schoolCursor = db.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_SCHOOL + " WHERE " + DatabaseHelper.COL_SCHOOLCODE + "=?", new String[]{stCode});
+
+        // Move the cursor to the first row
+        boolean studentExists = studentCursor.moveToFirst();
+        boolean schoolExists = schoolCursor.moveToFirst();
+
+        // Close the Cursor
+        studentCursor.close();
+        schoolCursor.close();
+
+        return studentExists && schoolExists;  // This method will return false if the cursor is empty
     }
 
     private void showDatePickerDialog() {

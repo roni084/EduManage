@@ -66,14 +66,21 @@ public class AddTeacherActivity extends AppCompatActivity {
             String qualification = etTeacherQualification.getText().toString();
             String designation = etTeacherDesignation.getText().toString();
 
+            DatabaseHelper dbc = new DatabaseHelper(AddTeacherActivity.this);
 
             if (name.isEmpty() || username.isEmpty() || qualification.isEmpty() || designation.isEmpty() || imageByteArray == null) {
                 Toast.makeText(this, "Please fill all fields and select an image", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(AddTeacherActivity.this, "Teacher added to the database.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddTeacherActivity.this, AdminHomeActivity.class);
-                startActivity(intent);
+                boolean addedTeacher = dbc.addTeacher(name, username, qualification, designation, imageByteArray);
+
+                if (addedTeacher) {
+                    Toast.makeText(AddTeacherActivity.this, "Teacher added to the database.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddTeacherActivity.this, AdminHomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(AddTeacherActivity.this, "Failed to add teacher. Please try again.", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

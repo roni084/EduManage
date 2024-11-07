@@ -56,13 +56,20 @@ public class AddStudentActivity extends AppCompatActivity {
             String name = etStudentName.getText().toString();
             String username = etStudentUsername.getText().toString();
 
+            DatabaseHelper dbc = new DatabaseHelper(AddStudentActivity.this);
+
             if (name.isEmpty() || username.isEmpty() || imageByteArray == null) {
                 Toast.makeText(this, "Please fill all fields and select an image", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(AddStudentActivity.this, "Student has been successfully added to the database", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(AddStudentActivity.this, AdminHomeActivity.class);
-                startActivity(intent);
+                boolean addedStudent = dbc.addStudent(name, username, imageByteArray);
 
+                if (addedStudent) {
+                    Toast.makeText(AddStudentActivity.this, "Student has been successfully added to the database", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddStudentActivity.this, AdminHomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(AddStudentActivity.this, "Failed to add student. Please try again.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
