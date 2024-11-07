@@ -68,8 +68,9 @@ public class RegisterAdminActivity extends AppCompatActivity {
                 etAdminConfirmPassword.setError("Passwords do not match! Try again.");
                 return;
             }
-
             Toast.makeText(RegisterAdminActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterAdminActivity.this, CreateSchoolActivity.class);
+            startActivity(intent);
         });
 
         // Login button clicked

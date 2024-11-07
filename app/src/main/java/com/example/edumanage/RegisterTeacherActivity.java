@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.Calendar;
+import java.util.regex.Pattern;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +25,13 @@ import androidx.core.view.WindowInsetsCompat;
 public class RegisterTeacherActivity extends AppCompatActivity {
 
     private EditText etTeacherDOB;
+    private RadioGroup rgTeacherGender;
+    private RadioButton rbTeacherGender;
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("[A-Z][a-z]+(?:\\s[A-Z][a-z]+)?");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("[a-z0-9][\\w.-]+@[\\w.-]+\\.[a-z]{2,}");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("01[356789]\\d{8}");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Z])(?=.*\\W)[\\S]{6,}");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +45,7 @@ public class RegisterTeacherActivity extends AppCompatActivity {
         EditText etTeacherEmail = findViewById(R.id.et_r_teacher_email);
         EditText etTeacherAddress = findViewById(R.id.et_r_teacher_address);
         etTeacherDOB = findViewById(R.id.et_r_teacher_dob);
-        EditText etTeacherGender = findViewById(R.id.et_r_teacher_gender);
+        rgTeacherGender = findViewById(R.id.rg_teacher_gender);
         EditText etTeacherMobile = findViewById(R.id.et_r_teacher_phone);
         EditText etTeacherPassword = findViewById(R.id.et_r_teacher_password);
         EditText etTeacherConfirmPassword = findViewById(R.id.et_r_teacher_confirm_password);
@@ -55,18 +66,51 @@ public class RegisterTeacherActivity extends AppCompatActivity {
             String t_email = etTeacherEmail.getText().toString().trim();
             String t_address = etTeacherAddress.getText().toString().trim();
             String t_dob = etTeacherDOB.getText().toString().trim();
-            String t_gender = etTeacherGender.getText().toString().trim();
             String t_mobile = etTeacherMobile.getText().toString().trim();
             String t_pass = etTeacherPassword.getText().toString().trim();
             String t_confirmPass = etTeacherConfirmPassword.getText().toString().trim();
 
-            // Checking password and non-empty fields
-            if (!t_name.isEmpty() && !t_username.isEmpty() && !t_code.isEmpty() && !t_dob.isEmpty() && !t_gender.isEmpty() && !t_email.isEmpty() && !t_address.isEmpty() && !t_mobile.isEmpty()) {
+            // Get selected gender
+            int selectedGenderId = rgTeacherGender.getCheckedRadioButtonId();
+            if (selectedGenderId != -1) {
+                rbTeacherGender = findViewById(selectedGenderId);
+                String t_gender = rbTeacherGender.getText().toString();
+
+                // Validate non-empty fields and password match
+                if (t_name.isEmpty() || t_username.isEmpty() || t_code.isEmpty() || t_email.isEmpty() || t_address.isEmpty() || t_dob.isEmpty() || t_mobile.isEmpty() || t_pass.isEmpty() || t_confirmPass.isEmpty()) {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!NAME_PATTERN.matcher(t_name).matches()) {
+                    etTeacherName.setError("Invalid name! Only letters allowed.");
+                    return;
+                }
+                if (!EMAIL_PATTERN.matcher(t_email).matches()) {
+                    etTeacherEmail.setError("Invalid email address!");
+                    return;
+                }
+                if (!PHONE_PATTERN.matcher(t_mobile).matches()) {
+                    etTeacherMobile.setError("Invalid phone format. Try again.");
+                    return;
+                }
+                if (!PASSWORD_PATTERN.matcher(t_pass).matches()) {
+                    etTeacherPassword.setError("Password must be at least 6 characters, include an uppercase letter and a special character.");
+                    return;
+                }
+                if (!t_pass.equals(t_confirmPass)) {
+                    etTeacherConfirmPassword.setError("Passwords do not match! Try again.");
+                    return;
+                }
+
+                // Registration successful message
                 Toast.makeText(RegisterTeacherActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterTeacherActivity.this, LoginActivity.class);  // Assuming LoginActivity is the activity after registered as teacher
-                startActivity(intent);
+
+            } else {
+                Toast.makeText(this, "Please select a gender", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         // If Login button is clicked
         btnTeacherLogin.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterTeacherActivity.this, LoginActivity.class);  // LoginActivity is the activity for login as teacher after Login button clicked
