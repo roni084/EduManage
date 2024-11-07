@@ -39,11 +39,26 @@ public class CreateSchoolActivity extends AppCompatActivity {
             String s_address = etSchoolAddress.getText().toString();
 
             //Checking non-empty fields
-            if (!s_name.isEmpty() && !s_code.isEmpty() && !s_standard.isEmpty() && !s_address.isEmpty()) {
-                Toast.makeText(CreateSchoolActivity.this, "School created", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(CreateSchoolActivity.this, LoginActivity.class);  //Assuming LoginActivity is the activity after creating school by admin
-                startActivity(intent);
+            if (!s_name.isEmpty() || !s_code.isEmpty() || !s_standard.isEmpty() || !s_address.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                DatabaseHelper dbc = new DatabaseHelper(CreateSchoolActivity.this);  //database connection
 
+                try {
+                    createSchool = dbc.insertSchool(s_name, s_code, s_standard, s_address);  //data passed to insertSchool method
+                } catch (Exception e) {
+                    Log.e(TAG, "Error inserting school data: ", e);
+                }
+
+                //if data inserted into School_info table
+                if (createSchool) {
+                    Toast.makeText(CreateSchoolActivity.this, "School created", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateSchoolActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(CreateSchoolActivity.this, "Failed to create school!", Toast.LENGTH_SHORT).show();
+                }
             }
 
         });
