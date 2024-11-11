@@ -2,6 +2,7 @@ package com.example.edumanage;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -234,5 +235,78 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //updateT(result) value, if inserted, then "row number", if not inserted, then -1
         return updateT != -1;
+    }
+
+    public School getSchoolDetails() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SCHOOL, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(COL_SCHOOLNAME);
+            int codeIndex = cursor.getColumnIndex(COL_SCHOOLCODE);
+            int categoryIndex = cursor.getColumnIndex(COL_SCHOOLSTANDARD);
+            int addressIndex = cursor.getColumnIndex(COL_SCHOOLADDRESS);
+
+            if (nameIndex >= 0 && codeIndex >= 0 && categoryIndex >= 0 && addressIndex >= 0) {
+                String name = cursor.getString(nameIndex);
+                String code = cursor.getString(codeIndex);
+                String category = cursor.getString(categoryIndex);
+                String address = cursor.getString(addressIndex);
+                cursor.close();
+                return new School(name, code, category, address);
+            }
+            cursor.close();
+        }
+        return null;
+    }
+    public int getTotalTeachers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_TEACHER, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count;
+        } else {
+            return 0;
+        }
+    }
+    public int getTotalStudents() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_STUDENT, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            cursor.close();
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    // Create a School class to hold the school details
+    public static class School {
+        private final String name;
+        private final String code;
+        private final String category;
+        private final String address;
+
+        public School(String name, String code, String category, String address) {
+            this.name = name;
+            this.code = code;
+            this.category = category;
+            this.address = address;
+        }
+        public String getName() {
+            return name;
+        }
+        public String getCode() {
+            return code;
+        }
+        public String getCategory() {
+            return category;
+        }
+        public String getAddress() {
+            return address;
+        }
     }
 }

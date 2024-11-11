@@ -26,6 +26,24 @@ public class ViewSchoolActivity extends AppCompatActivity {
         TextView tvTotalStudents = findViewById(R.id.tv_total_students);
         Button btnBack = findViewById(R.id.btn_back);
 
+        Intent getIntent = getIntent();
+        String schoolCode = getIntent.getStringExtra("school_code");
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+
+        // Fetch school details
+        DatabaseHelper.School school = dbHelper.getSchoolDetails();
+        int totalTeachers = dbHelper.getTotalTeachers();
+        int totalStudents = dbHelper.getTotalStudents();
+
+        if (school != null) {
+            tvSchoolName.setText("School Name: " + school.getName());
+            tvSchoolCode.setText("School Code:    " + school.getCode());
+            tvSchoolCategory.setText("Category:           " + school.getCategory());
+            tvSchoolAddress.setText("Address:             " + school.getAddress());
+            tvTotalTeachers.setText("Total Teachers: " + totalTeachers);
+            tvTotalStudents.setText("Total Students: " + totalStudents);
+        }
 
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(ViewSchoolActivity.this, AdminHomeActivity.class);
