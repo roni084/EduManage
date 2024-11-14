@@ -32,9 +32,9 @@ public class ViewSchoolActivity extends AppCompatActivity {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 
         // Fetch school details
-        DatabaseHelper.School school = dbHelper.getSchoolDetails();
-        int totalTeachers = dbHelper.getTotalTeachers();
-        int totalStudents = dbHelper.getTotalStudents();
+        DatabaseHelper.School school = dbHelper.getSchoolDetails(schoolCode);
+        int totalTeachers = dbHelper.getTotalTeachers(schoolCode);
+        int totalStudents = dbHelper.getTotalStudents(schoolCode);
 
         if (school != null) {
             tvSchoolName.setText("School Name: " + school.getName());

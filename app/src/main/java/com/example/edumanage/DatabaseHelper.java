@@ -105,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_RTEMAIL + " TEXT, " +
                 COL_RTADDRESS + " TEXT, " +
                 COL_RTDOB + " TEXT, " +
-                COL_RTGENDER + " TEXT, " +  // Fixed space issue
+                COL_RTGENDER + " TEXT, " +
                 COL_RTMOBILE + " TEXT, " +
                 COL_RTPASS + " TEXT)";
         db.execSQL(createRegisterTeacherTable);
@@ -237,9 +237,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return updateT != -1;
     }
 
-    public School getSchoolDetails() {
+    public School getSchoolDetails(String schoolCode) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SCHOOL, null);
+        String query = "SELECT * FROM " + TABLE_SCHOOL + " WHERE " + COL_SCHOOLCODE + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{schoolCode});
+
         if (cursor != null && cursor.moveToFirst()) {
             int nameIndex = cursor.getColumnIndex(COL_SCHOOLNAME);
             int codeIndex = cursor.getColumnIndex(COL_SCHOOLCODE);
@@ -258,7 +260,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return null;
     }
-    public int getTotalTeachers() {
+    public int getTotalTeachers(String schoolCode) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_TEACHER, null);
 
@@ -270,7 +272,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return 0;
         }
     }
-    public int getTotalStudents() {
+    public int getTotalStudents(String schoolCode) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_STUDENT, null);
 
@@ -281,6 +283,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return 0;
         }
+    }
+
+    public byte[] getStudentImage(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_STUDENT, new String[]{COL_STUDENT_IMAGE_URI}, COL_SUSERNAME + "=?", new String[]{username}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(COL_STUDENT_IMAGE_URI);
+            if (columnIndex != -1) {
+                byte[] imageBytes = cursor.getBlob(columnIndex);
+                cursor.close();
+                return imageBytes;
+            } else {
+                Log.e("DatabaseHelper", "Column not found: " + COL_STUDENT_IMAGE_URI);
+            }
+        }
+        return null;
+    }
+
+    public byte[] getTeacherImage(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TEACHER, new String[]{COL_TEACHER_IMAGE_URI}, COL_TUSERNAME + "=?", new String[]{username}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(COL_TEACHER_IMAGE_URI);
+            if (columnIndex != -1) {
+                byte[] imageBytes = cursor.getBlob(columnIndex);
+                cursor.close();
+                return imageBytes;
+            } else {
+                Log.e("DatabaseHelper", "Column not found: " + COL_TEACHER_IMAGE_URI);
+            }
+        }
+        return null;
     }
 
     // Create a School class to hold the school details

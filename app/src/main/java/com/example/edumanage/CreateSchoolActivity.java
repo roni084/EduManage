@@ -39,7 +39,7 @@ public class CreateSchoolActivity extends AppCompatActivity {
             String s_address = etSchoolAddress.getText().toString();
 
             //Checking non-empty fields
-            if (!s_name.isEmpty() || !s_code.isEmpty() || !s_standard.isEmpty() || !s_address.isEmpty()) {
+            if (s_name.isEmpty() || s_code.isEmpty() || s_standard.isEmpty() || s_address.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
             else {
